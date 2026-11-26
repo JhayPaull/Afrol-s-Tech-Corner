@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Afrol's Tech Corner — Next-Gen Gadgets in the Philippines</title>
+  <meta name="description" content="Afrol's Tech Corner — Shop authentic smartwatches, laptops, cellphones, and accessories with nationwide shipping and store warranty." />
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Google Fonts: Oswald + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       ANNOUNCEMENT BAR
+  ══════════════════════════════════════════════════════ -->
+  <div class="announcement-bar" role="banner">
+    <span>Nationwide Shipping Available</span>
+    <span class="mx-3" aria-hidden="true">|</span>
+    <span>100% Authentic Gadgets with Store Warranty</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       STICKY NAVBAR
+  ══════════════════════════════════════════════════════ -->
+  <nav class="navbar navbar-expand-lg sticky-top atc-navbar px-4 px-lg-5" id="mainNav" aria-label="Main Navigation">
+    <div class="container-fluid px-0">
+
+      <!-- Left: Brand Wordmark -->
+      <a class="navbar-brand" href="#home">Afrol's Tech Corner</a>
+
+      <!-- Mobile toggler -->
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse" data-bs-target="#mainNavMenu"
+        aria-controls="mainNavMenu" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNavMenu">
+
+        <!-- Center: Navigation Links -->
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+
+        <!-- Right: Search Bar -->
+        <div class="d-flex align-items-center">
+          <div class="position-relative">
+            <input
+              id="navSearch"
+              class="search-pill"
+              type="search"
+              placeholder="Search gadgets..."
+              aria-label="Search products"
+              autocomplete="off"
+            />
+            <i class="bi bi-search position-absolute text-slate"
+               style="right:14px; top:50%; transform:translateY(-50%); pointer-events:none; font-size:0.8rem;"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       HERO SECTION
+  ══════════════════════════════════════════════════════ -->
+  <section class="hero-section" id="home" aria-label="Hero Banner">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container-wide">
+      <div class="hero-content px-2 px-sm-0">
+        <p class="hero-eyebrow">Afrol's Tech Corner — Est. 2020</p>
+        <h1 class="hero-title">
+          Next-Gen Tech.<br />
+          Built For<br />
+          Everyday.
+        </h1>
+        <p class="hero-subtitle">
+          Discover 100+ premium gadgets — from cutting-edge smartwatches and laptops
+          to flagship smartphones and must-have accessories. 100% authentic, store-warranted,
+          shipped nationwide.
+        </p>
+        <a href="#products" class="btn-pill-black" id="heroExploreBtn">Explore Gadgets</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       PRODUCTS SECTION
+  ══════════════════════════════════════════════════════ -->
+  <section class="products-section" id="products" aria-label="All Gadgets">
+    <div class="container-wide">
+
+      <!-- Section header -->
+      <div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-5">
+        <div>
+          <h2 class="section-title">Shop All Gadgets</h2>
+          <p class="section-count" id="resultsCount">Showing 100 items</p>
+        </div>
+        <!-- Sort Dropdown -->
+        <select class="sort-select" id="sortSelect" aria-label="Sort products">
+          <option value="featured">Featured</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+        </select>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar mb-5" role="group" aria-label="Filter by category">
+        <button class="btn-pill-outline active" data-filter="all">All</button>
+        <button class="btn-pill-outline" data-filter="Relo / Smartwatches">Relo / Smartwatches</button>
+        <button class="btn-pill-outline" data-filter="Laptops">Laptops</button>
+        <button class="btn-pill-outline" data-filter="Cellphones (CP)">Cellphones (CP)</button>
+        <button class="btn-pill-outline" data-filter="Accessories">Accessories</button>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="row g-4" id="productGrid" aria-live="polite">
+        <!-- Cards injected by JS -->
+      </div>
+
+      <!-- No Results -->
+      <div id="noResults" class="text-center py-5" style="display:none;" aria-live="polite">
+        <p class="no-results">No gadgets found.</p>
+        <p class="text-slate mt-2" style="font-size:0.9rem;">Try a different search term or category.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       ABOUT US SECTION
+  ══════════════════════════════════════════════════════ -->
+  <section class="about-section" id="about" aria-label="About Afrol's Tech Corner">
+    <div class="container-wide">
+      <div class="row g-5 align-items-center">
+
+        <!-- Image -->
+        <div class="col-lg-6">
+          <div class="about-img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=900&q=80"
+              alt="Afrol's Tech Corner store interior with premium gadgets"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- Copy -->
+        <div class="col-lg-6">
+          <p class="about-eyebrow">Our Story</p>
+          <h2 class="about-title">Tech You Can<br />Trust.</h2>
+
+          <p class="about-body">
+            Founded in 2020, Afrol's Tech Corner started as a passion project — a small corner
+            shop dedicated to bringing the latest, most reliable gadgets to everyday Filipinos.
+            What began with a handful of carefully sourced smartphones has grown into a
+            full-spectrum tech destination with over 500 satisfied customers monthly.
+          </p>
+          <p class="about-body">
+            Every single item in our catalog is 100% authentic, sourced directly from
+            authorized distributors and global brand partners. Before anything hits our
+            shelves (or ships to your door), it goes through our in-house quality assurance
+            check to make sure it's exactly what it says it is.
+          </p>
+          <p class="about-body" style="margin-bottom:28px;">
+            We back every purchase with a comprehensive store warranty — because buying tech
+            should feel exciting, not risky.
+          </p>
+
+          <!-- Badges -->
+          <div class="mb-32" style="margin-bottom:0;">
+            <span class="about-badge"><i class="bi bi-patch-check-fill"></i> 100% Authentic</span>
+            <span class="about-badge"><i class="bi bi-shield-check"></i> Store Warranty</span>
+            <span class="about-badge"><i class="bi bi-truck"></i> Nationwide Shipping</span>
+            <span class="about-badge"><i class="bi bi-headset"></i> After-Sales Support</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       CONTACT SECTION
+  ══════════════════════════════════════════════════════ -->
+  <section class="contact-section" id="contact" aria-label="Contact Us">
+    <div class="container-wide">
+
+      <div class="row g-5">
+
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+          <p class="about-eyebrow">Get In Touch</p>
+          <h2 class="about-title" style="font-size:clamp(1.6rem,3.5vw,2.5rem); margin-bottom:28px;">
+            Send Us A<br />Message.
+          </h2>
+
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="mb-3">
+              <label class="contact-label" for="contactName">Full Name</label>
+              <input type="text" class="form-control" id="contactName"
+                placeholder="Juan dela Cruz" required />
+            </div>
+            <div class="mb-3">
+              <label class="contact-label" for="contactEmail">Email / Phone</label>
+              <input type="text" class="form-control" id="contactEmail"
+                placeholder="juan@email.com or 09XX XXX XXXX" required />
+            </div>
+            <div class="mb-4">
+              <label class="contact-label" for="contactMsg">Message</label>
+              <textarea class="form-control" id="contactMsg" rows="5"
+                placeholder="Tell us what you're looking for or ask about a product..."
+                required></textarea>
+            </div>
+            <button type="submit" class="btn-pill-black">Send Message</button>
+            <p id="contactSuccess" class="mt-3 text-orange" style="display:none; font-size:0.85rem; font-weight:600;">
+              ✓ Message sent! We'll get back to you within 24 hours.
+            </p>
+          </form>
+        </div>
+
+        <!-- Store Info -->
+        <div class="col-lg-5">
+          <div style="padding-top:4rem;">
+
+            <div class="mb-4">
+              <p class="contact-info-title"><i class="bi bi-geo-alt me-2 text-orange"></i>Store Location</p>
+              <p class="contact-info-text">
+                123 Tech Avenue, Brgy. Innovacion<br />
+                Quezon City, Metro Manila, Philippines 1100
+              </p>
+            </div>
+
+            <hr class="contact-divider" />
+
+            <div class="mb-4">
+              <p class="contact-info-title"><i class="bi bi-clock me-2 text-orange"></i>Store Hours</p>
+              <p class="contact-info-text">
+                Monday – Saturday: 9:00 AM – 7:00 PM<br />
+                Sunday: 10:00 AM – 5:00 PM<br />
+                <span style="color:var(--burnt-orange); font-size:0.8rem;">Online inquiries accepted 24/7</span>
+              </p>
+            </div>
+
+            <hr class="contact-divider" />
+
+            <div class="mb-4">
+              <p class="contact-info-title"><i class="bi bi-telephone me-2 text-orange"></i>Contact Numbers</p>
+              <p class="contact-info-text">
+                Globe: 0917 123 4567<br />
+                Smart: 0918 765 4321<br />
+                Landline: (02) 8123 4567
+              </p>
+            </div>
+
+            <hr class="contact-divider" />
+
+            <div>
+              <p class="contact-info-title"><i class="bi bi-envelope me-2 text-orange"></i>Email</p>
+              <p class="contact-info-text">hello@afroltechcorner.ph<br />support@afroltechcorner.ph</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════════════════════ -->
+  <footer class="atc-footer" aria-label="Site Footer">
+    <div class="container-wide">
+      <div class="row g-5">
+
+        <!-- Brand column -->
+        <div class="col-lg-4 col-md-6">
+          <p class="footer-brand mb-2">Afrol's Tech Corner</p>
+          <p class="footer-tagline mb-4">
+            Your trusted source for authentic gadgets<br />in the Philippines since 2020.
+          </p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="#" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            <a href="#" aria-label="Shopee"><i class="bi bi-shop"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-lg-2 col-md-6 col-6">
+          <p class="footer-col-title">Shop</p>
+          <a href="#products" class="footer-link">All Gadgets</a>
+          <a href="#products" class="footer-link" data-filter-nav="Relo / Smartwatches">Smartwatches</a>
+          <a href="#products" class="footer-link" data-filter-nav="Laptops">Laptops</a>
+          <a href="#products" class="footer-link" data-filter-nav="Cellphones (CP)">Cellphones</a>
+          <a href="#products" class="footer-link" data-filter-nav="Accessories">Accessories</a>
+        </div>
+
+        <!-- Company -->
+        <div class="col-lg-2 col-md-6 col-6">
+          <p class="footer-col-title">Company</p>
+          <a href="#about" class="footer-link">About Us</a>
+          <a href="#contact" class="footer-link">Contact</a>
+          <a href="#" class="footer-link">Our Story</a>
+          <a href="#" class="footer-link">Careers</a>
+          <a href="#" class="footer-link">Blog</a>
+        </div>
+
+        <!-- Support -->
+        <div class="col-lg-2 col-md-6 col-6">
+          <p class="footer-col-title">Support</p>
+          <a href="#" class="footer-link">Warranty Info</a>
+          <a href="#" class="footer-link">Return Policy</a>
+          <a href="#" class="footer-link">Shipping Info</a>
+          <a href="#" class="footer-link">Track Order</a>
+          <a href="#contact" class="footer-link">Help Center</a>
+        </div>
+
+        <!-- Legal -->
+        <div class="col-lg-2 col-md-6 col-6">
+          <p class="footer-col-title">Legal</p>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Use</a>
+          <a href="#" class="footer-link">Cookie Policy</a>
+          <a href="#" class="footer-link">Accessibility</a>
+        </div>
+
+      </div>
+
+      <!-- Footer bottom bar -->
+      <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <span>© 2026 Afrol's Tech Corner. All Rights Reserved.</span>
+        <a href="#home" class="back-top"><i class="bi bi-arrow-up me-1"></i>Back to Top</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════════════════
+       INQUIRY MODAL
+  ══════════════════════════════════════════════════════ -->
+  <div class="modal fade" id="inquiryModal" tabindex="-1"
+    aria-labelledby="inquiryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="inquiryModalLabel">Product Inquiry</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+          <div class="row g-4">
+
+            <!-- Product snapshot -->
+            <div class="col-md-5">
+              <img id="modalProductImg" src="" alt="" class="modal-product-img mb-3" />
+              <span id="modalProductStatus" class="status-tag"></span>
+              <h4 id="modalProductName" class="modal-product-name"></h4>
+              <p id="modalProductCat" class="modal-product-cat"></p>
+              <p id="modalProductPrice" class="modal-product-price"></p>
+            </div>
+
+            <!-- Inquiry form -->
+            <div class="col-md-7">
+              <p style="font-size:0.85rem; color:var(--muted-slate); margin-bottom:20px;">
+                Fill in your details and we'll reach out to confirm availability,
+                pricing, and payment options within 24 hours.
+              </p>
+              <form id="inquiryForm" novalidate>
+                <div class="mb-3">
+                  <label class="contact-label" for="inqName">Full Name <span class="text-orange">*</span></label>
+                  <input type="text" class="form-control" id="inqName"
+                    placeholder="Juan dela Cruz" required />
+                </div>
+                <div class="mb-3">
+                  <label class="contact-label" for="inqContact">Email / Phone <span class="text-orange">*</span></label>
+                  <input type="text" class="form-control" id="inqContact"
+                    placeholder="09XX XXX XXXX or email" required />
+                </div>
+                <div class="mb-3">
+                  <label class="contact-label" for="inqQty">Quantity</label>
+                  <input type="number" class="form-control" id="inqQty"
+                    min="1" value="1" />
+                </div>
+                <div class="mb-4">
+                  <label class="contact-label" for="inqNote">Additional Notes</label>
+                  <textarea class="form-control" id="inqNote" rows="3"
+                    placeholder="Color preference, delivery address, questions..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-pill-black w-100">Submit Inquiry</button>
+                <p id="inquirySuccess" class="text-center mt-3 text-orange"
+                  style="display:none; font-size:0.85rem; font-weight:600;">
+                  ✓ Inquiry submitted! We'll contact you shortly.
+                </p>
+              </form>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════════════════════ -->
+  <!-- Product Data + localStorage helpers -->
+  <script src="products-data.js"></script>
+  <!-- Bootstrap 5.3 JS Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  /* ============================================================
+     STOREFRONT APPLICATION
+     ============================================================ */
+  (function () {
+    'use strict';
+
+    // ── State ─────────────────────────────────────────────────
+    let allProducts   = [];   // loaded from localStorage / defaults
+    let activeFilter  = 'all';
+    let activeSort    = 'featured';
+    let searchQuery   = '';
+
+    // ── DOM Refs ──────────────────────────────────────────────
+    const grid         = document.getElementById('productGrid');
+    const noResults    = document.getElementById('noResults');
+    const resultsCount = document.getElementById('resultsCount');
+    const sortSelect   = document.getElementById('sortSelect');
+    const navSearch    = document.getElementById('navSearch');
+    const filterBtns   = document.querySelectorAll('[data-filter]');
+    const footerNavs   = document.querySelectorAll('[data-filter-nav]');
+
+    // Modal refs
+    const inquiryModal     = new bootstrap.Modal(document.getElementById('inquiryModal'));
+    const modalImg         = document.getElementById('modalProductImg');
+    const modalName        = document.getElementById('modalProductName');
+    const modalCat         = document.getElementById('modalProductCat');
+    const modalPrice       = document.getElementById('modalProductPrice');
+    const modalStatus      = document.getElementById('modalProductStatus');
+    const inquiryForm      = document.getElementById('inquiryForm');
+    const inquirySuccess   = document.getElementById('inquirySuccess');
+
+    // ── Init ──────────────────────────────────────────────────
+    function init() {
+      allProducts = loadProducts();   // from products-data.js
+      renderGrid();
+      bindEvents();
+      handleNavScroll();
+      handleHashNav();
+    }
+
+    // ── Render ────────────────────────────────────────────────
+    function renderGrid() {
+      let products = [...allProducts];
+
+      // Filter by category
+      if (activeFilter !== 'all') {
+        products = products.filter(p => p.category === activeFilter);
+      }
+
+      // Filter by search
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        products = products.filter(p =>
+          p.name.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.status.toLowerCase().includes(q)
+        );
+      }
+
+      // Sort
+      if (activeSort === 'low') {
+        products.sort((a, b) => a.price - b.price);
+      } else if (activeSort === 'high') {
+        products.sort((a, b) => b.price - a.price);
+      }
+      // 'featured' = original order (ID order)
+
+      // Update results count
+      const total = allProducts.length;
+      resultsCount.textContent = products.length === total
+        ? `Showing all ${total} items`
+        : `Showing ${products.length} of ${total} items`;
+
+      // Render cards
+      if (products.length === 0) {
+        grid.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
+
+      noResults.style.display = 'none';
+      grid.innerHTML = products.map(p => createCardHTML(p)).join('');
+
+      // Bind "Inquire" buttons
+      grid.querySelectorAll('.btn-inquire').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const id = parseInt(this.dataset.id, 10);
+          openInquiryModal(id);
+        });
+      });
+    }
+
+    // ── Card HTML ─────────────────────────────────────────────
+    function createCardHTML(p) {
+      return `
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+          <article class="product-card" aria-label="${escHtml(p.name)}">
+            <div class="product-img-wrap">
+              <img
+                src="${escHtml(p.image)}"
+                alt="${escHtml(p.name)}"
+                loading="lazy"
+                onerror="this.src='https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=600&q=80'"
+              />
+            </div>
+            <span class="status-tag">${escHtml(p.status)}</span>
+            <p class="product-name">${escHtml(p.name)}</p>
+            <p class="product-cat">${escHtml(p.category)}</p>
+            <p class="product-price">${formatPrice(p.price)}</p>
+            <button
+              class="btn-pill-outline btn-pill-sm btn-inquire"
+              data-id="${p.id}"
+              aria-label="Inquire about ${escHtml(p.name)}"
+            >Inquire</button>
+          </article>
+        </div>`;
+    }
+
+    // ── Inquiry Modal ─────────────────────────────────────────
+    function openInquiryModal(id) {
+      const p = allProducts.find(x => x.id === id);
+      if (!p) return;
+
+      modalImg.src         = p.image;
+      modalImg.alt         = p.name;
+      modalName.textContent   = p.name;
+      modalCat.textContent    = p.category;
+      modalPrice.textContent  = formatPrice(p.price);
+      modalStatus.textContent = p.status;
+
+      // Reset form
+      inquiryForm.reset();
+      inquirySuccess.style.display = 'none';
+
+      inquiryModal.show();
+    }
+
+    // ── Events ────────────────────────────────────────────────
+    function bindEvents() {
+      // Category filter buttons
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          activeFilter = this.dataset.filter;
+          renderGrid();
+        });
+      });
+
+      // Footer quick-filter links
+      footerNavs.forEach(a => {
+        a.addEventListener('click', function (e) {
+          e.preventDefault();
+          const cat = this.dataset.filterNav;
+          filterBtns.forEach(b => {
+            b.classList.toggle('active', b.dataset.filter === cat);
+          });
+          activeFilter = cat;
+          renderGrid();
+          document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+
+      // Sort dropdown
+      sortSelect.addEventListener('change', function () {
+        activeSort = this.value;
+        renderGrid();
+      });
+
+      // Search (navbar)
+      navSearch.addEventListener('input', function () {
+        searchQuery = this.value;
+        renderGrid();
+        // If user is searching, scroll to products if not in view
+        if (searchQuery.trim()) {
+          const rect = document.getElementById('products').getBoundingClientRect();
+          if (rect.top > window.innerHeight || rect.bottom < 0) {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+
+      // Hero "Explore Gadgets" smooth scroll
+      document.getElementById('heroExploreBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Inquiry form submit
+      inquiryForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name    = document.getElementById('inqName').value.trim();
+        const contact = document.getElementById('inqContact').value.trim();
+        if (!name || !contact) {
+          alert('Please fill in your name and contact details.');
+          return;
+        }
+        // Simulate submission
+        inquirySuccess.style.display = 'block';
+        inquiryForm.querySelectorAll('input, textarea, button[type=submit]').forEach(el => el.disabled = true);
+        setTimeout(() => { bootstrap.Modal.getInstance(document.getElementById('inquiryModal')).hide(); }, 2800);
+      });
+
+      // Contact form submit
+      document.getElementById('contactForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        document.getElementById('contactSuccess').style.display = 'block';
+        this.reset();
+      });
+
+      // Modal hidden: re-enable form
+      document.getElementById('inquiryModal').addEventListener('hidden.bs.modal', function () {
+        inquiryForm.reset();
+        inquirySuccess.style.display = 'none';
+        inquiryForm.querySelectorAll('input, textarea, button').forEach(el => el.disabled = false);
+      });
+    }
+
+    // ── Navbar scroll shadow ──────────────────────────────────
+    function handleNavScroll() {
+      const nav = document.getElementById('mainNav');
+      window.addEventListener('scroll', function () {
+        nav.classList.toggle('scrolled', window.scrollY > 50);
+
+        // Active nav link
+        const sections = ['home','products','about','contact'];
+        let current = '';
+        sections.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && window.scrollY >= el.offsetTop - 100) current = id;
+        });
+        document.querySelectorAll('.atc-navbar .nav-link').forEach(link => {
+          const href = link.getAttribute('href').replace('#','');
+          link.classList.toggle('active', href === current);
+        });
+      }, { passive: true });
+    }
+
+    // ── Handle hash on page load (deep linking) ───────────────
+    function handleHashNav() {
+      if (window.location.hash) {
+        setTimeout(() => {
+          const target = document.querySelector(window.location.hash);
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    }
+
+    // ── Utility: escape HTML ──────────────────────────────────
+    function escHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str ?? '';
+      return d.innerHTML;
+    }
+
+    // ── Boot ──────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', init);
+
+  })();
+  </script>
+
+</body>
+</html>

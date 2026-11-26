@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Afrol's Tech Corner</title>
+  <!-- NOTE: This page is NOT linked from index.html. Access directly by opening admin.html -->
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ── Admin-only micro styles ── */
+    body { background: #f7f7f7; min-height: 100vh; }
+    #adminDashboard { display: none; }
+    #loginScreen    { display: flex;  }
+
+    .edit-img-input {
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      background: var(--studio-gray);
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      width: 180px;
+      color: var(--jet-black);
+      outline: none;
+    }
+    .edit-img-input:focus { box-shadow: 0 0 0 2px var(--jet-black); }
+
+    .edit-name-input {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      background: var(--studio-gray);
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      width: 200px;
+      color: var(--jet-black);
+      outline: none;
+    }
+    .edit-name-input:focus { box-shadow: 0 0 0 2px var(--jet-black); }
+
+    /* Sticky table header */
+    .table-scroll-wrap {
+      max-height: calc(100vh - 240px);
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      background: white;
+    }
+
+    /* Toast notification */
+    #saveToast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--jet-black);
+      color: var(--white);
+      padding: 14px 24px;
+      border-radius: var(--pill-radius);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    #saveToast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Confirm modal */
+    #resetModal .modal-content { border-radius: 12px; overflow: hidden; }
+    #resetModal .modal-header { background: var(--burnt-orange); border: none; }
+    #resetModal .modal-title { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: white; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+       LOGIN SCREEN
+  ══════════════════════════════════════════════════════ -->
+  <div id="loginScreen" class="admin-login-wrap">
+    <div class="admin-login-card">
+
+      <div class="text-center mb-4">
+        <div style="width:52px; height:52px; background:var(--jet-black); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px;">
+          <i class="bi bi-lock text-white" style="font-size:1.3rem;"></i>
+        </div>
+        <p class="admin-login-brand">Afrol's Tech Corner</p>
+        <p class="admin-login-sub">Admin Dashboard — Authorized Access Only</p>
+      </div>
+
+      <form id="loginForm" novalidate autocomplete="off">
+        <p class="login-error" id="loginError">
+          <i class="bi bi-exclamation-circle me-1"></i>Incorrect username or password.
+        </p>
+
+        <label class="contact-label" for="loginUser">Username</label>
+        <input
+          type="text"
+          class="form-control mb-2"
+          id="loginUser"
+          placeholder="admin"
+          autocomplete="username"
+          required
+        />
+
+        <label class="contact-label" for="loginPass">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="loginPass"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        />
+
+        <button type="submit" class="btn-pill-black w-100 mt-4">Sign In</button>
+      </form>
+
+      <p class="text-center mt-4" style="font-size:0.72rem; color:var(--muted-slate);">
+        Not a staff member?
+        <a href="index.html" style="color:var(--jet-black); font-weight:600;">← Back to Storefront</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ADMIN DASHBOARD
+  ══════════════════════════════════════════════════════ -->
+  <div id="adminDashboard">
+
+    <!-- Top Bar -->
+    <div class="admin-topbar">
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <span class="admin-topbar-brand">Afrol's Tech Corner</span>
+        <span class="admin-topbar-badge">Admin Panel</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <a href="index.html" target="_blank"
+          class="footer-link" style="font-size:0.78rem; color:rgba(255,255,255,0.5); text-decoration:none;">
+          <i class="bi bi-box-arrow-up-right me-1"></i>View Storefront
+        </a>
+        <button id="logoutBtn" class="btn-pill-orange" style="padding:8px 20px; font-size:0.75rem;">
+          <i class="bi bi-box-arrow-left me-1"></i>Log Out
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Bar -->
+    <div class="admin-summary-bar">
+      <div>
+        <div class="admin-summary-stat" id="totalCount">100</div>
+        <div class="admin-summary-label">Total Products</div>
+      </div>
+      <div>
+        <div class="admin-summary-stat" id="filteredCount">100</div>
+        <div class="admin-summary-label">Showing</div>
+      </div>
+      <div>
+        <div class="admin-summary-stat" id="editedCount">0</div>
+        <div class="admin-summary-label">Edited This Session</div>
+      </div>
+      <div class="ms-auto">
+        <button class="btn-pill-orange" id="resetBtn" style="font-size:0.78rem; padding:9px 22px;">
+          <i class="bi bi-arrow-counterclockwise me-1"></i>Reset Default Prices
+        </button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="admin-controls">
+      <input
+        type="search"
+        class="admin-search"
+        id="adminSearch"
+        placeholder="Search by name, category, or status..."
+        autocomplete="off"
+      />
+      <select class="admin-cat-filter" id="adminCatFilter" aria-label="Filter by category">
+        <option value="all">All Categories</option>
+        <option value="Relo / Smartwatches">Relo / Smartwatches</option>
+        <option value="Laptops">Laptops</option>
+        <option value="Cellphones (CP)">Cellphones (CP)</option>
+        <option value="Accessories">Accessories</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="admin-table-wrap">
+      <div class="table-scroll-wrap">
+        <table class="admin-table" id="adminTable" aria-label="Product Catalog Editor">
+          <thead>
+            <tr>
+              <th style="width:50px;">ID</th>
+              <th style="width:70px;">Image</th>
+              <th>Product Name</th>
+              <th style="width:160px;">Category</th>
+              <th style="width:80px;">Status</th>
+              <th style="width:130px;">Price (₱)</th>
+              <th style="width:80px;" class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /#adminDashboard -->
+
+  <!-- ── Reset Confirm Modal ────────────────────────────── -->
+  <div class="modal fade" id="resetModal" tabindex="-1" aria-labelledby="resetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resetModalLabel">
+            <i class="bi bi-exclamation-triangle me-2"></i>Reset All Prices?
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            style="filter:invert(1); opacity:0.7;"></button>
+        </div>
+        <div class="modal-body" style="font-family:var(--font-ui); font-size:0.9rem; color:var(--muted-slate); padding:28px;">
+          This will permanently restore all 100 products to their original default prices, names, and images.
+          Any changes you have saved will be lost. This cannot be undone.
+        </div>
+        <div class="modal-footer" style="border:none; padding:16px 28px 24px;">
+          <button type="button" class="btn-pill-outline btn-pill-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn-pill-orange" id="confirmResetBtn" style="font-size:0.78rem; padding:9px 22px;">
+            Yes, Reset Everything
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Edit Image Modal ───────────────────────────────── -->
+  <div class="modal fade" id="imgEditModal" tabindex="-1" aria-labelledby="imgEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imgEditModalLabel">Edit Image URL</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            style="filter:invert(1); opacity:0.7;"></button>
+        </div>
+        <div class="modal-body" style="padding:28px;">
+          <div class="mb-3">
+            <label class="contact-label" for="imgUrlInput">New Image URL</label>
+            <input type="url" class="form-control" id="imgUrlInput"
+              placeholder="https://example.com/image.jpg" />
+          </div>
+          <div class="mb-3 text-center">
+            <img id="imgPreview" src="" alt="Preview"
+              style="max-width:100%; max-height:160px; object-fit:contain; border-radius:8px; background:var(--studio-gray); padding:8px;" />
+          </div>
+          <input type="hidden" id="imgEditProductId" value="" />
+        </div>
+        <div class="modal-footer" style="border:none; padding:16px 28px 24px;">
+          <button type="button" class="btn-pill-outline btn-pill-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn-pill-black btn-pill-sm" id="confirmImgEdit">Save Image</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast ──────────────────────────────────────────── -->
+  <div id="saveToast" role="alert" aria-live="polite"></div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════════════════════ -->
+  <!-- Product Data + localStorage helpers -->
+  <script src="products-data.js"></script>
+  <!-- Bootstrap 5.3 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  /* ============================================================
+     ADMIN DASHBOARD APPLICATION
+     ============================================================ */
+  (function () {
+    'use strict';
+
+    /* ── Credentials (simple front-end gate) ─────────────── */
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'afrol2026';
+    const SESSION_KEY = 'atc_admin_session';
+
+    /* ── State ───────────────────────────────────────────── */
+    let products       = [];
+    let editedIds      = new Set();
+    let adminSearch    = '';
+    let adminCatFilter = 'all';
+
+    /* ── Bootstrap Modals ────────────────────────────────── */
+    const resetModal   = new bootstrap.Modal(document.getElementById('resetModal'));
+    const imgEditModal = new bootstrap.Modal(document.getElementById('imgEditModal'));
+
+    /* ── INIT ────────────────────────────────────────────── */
+    function init() {
+      /* Check session */
+      if (sessionStorage.getItem(SESSION_KEY) === '1') {
+        showDashboard();
+      }
+
+      /* Login form */
+      document.getElementById('loginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value;
+        const errEl = document.getElementById('loginError');
+        if (user === ADMIN_USER && pass === ADMIN_PASS) {
+          sessionStorage.setItem(SESSION_KEY, '1');
+          errEl.style.display = 'none';
+          showDashboard();
+        } else {
+          errEl.style.display = 'block';
+          document.getElementById('loginPass').value = '';
+          document.getElementById('loginPass').focus();
+        }
+      });
+
+      /* Logout */
+      document.getElementById('logoutBtn').addEventListener('click', function () {
+        sessionStorage.removeItem(SESSION_KEY);
+        window.location.reload();
+      });
+
+      /* Reset button */
+      document.getElementById('resetBtn').addEventListener('click', function () {
+        resetModal.show();
+      });
+
+      /* Confirm reset */
+      document.getElementById('confirmResetBtn').addEventListener('click', function () {
+        products = resetProducts();
+        editedIds.clear();
+        updateSummary();
+        renderTable();
+        resetModal.hide();
+        showToast('All products reset to defaults.', '🔄');
+      });
+
+      /* Admin search */
+      document.getElementById('adminSearch').addEventListener('input', function () {
+        adminSearch = this.value;
+        renderTable();
+      });
+
+      /* Category filter */
+      document.getElementById('adminCatFilter').addEventListener('change', function () {
+        adminCatFilter = this.value;
+        renderTable();
+      });
+
+      /* Image modal: live preview */
+      document.getElementById('imgUrlInput').addEventListener('input', function () {
+        document.getElementById('imgPreview').src = this.value;
+      });
+
+      /* Confirm image save */
+      document.getElementById('confirmImgEdit').addEventListener('click', function () {
+        const id  = parseInt(document.getElementById('imgEditProductId').value, 10);
+        const url = document.getElementById('imgUrlInput').value.trim();
+        if (!url) return;
+        products = updateProduct(id, { image: url });
+        editedIds.add(id);
+        updateSummary();
+        renderTable();
+        imgEditModal.hide();
+        showToast('Image updated successfully.', '🖼️');
+      });
+    }
+
+    /* ── Show Dashboard ──────────────────────────────────── */
+    function showDashboard() {
+      document.getElementById('loginScreen').style.display   = 'none';
+      document.getElementById('adminDashboard').style.display = 'block';
+      products = loadProducts();
+      updateSummary();
+      renderTable();
+    }
+
+    /* ── Summary Bar ─────────────────────────────────────── */
+    function updateSummary() {
+      document.getElementById('totalCount').textContent   = products.length;
+      document.getElementById('editedCount').textContent  = editedIds.size;
+    }
+
+    /* ── Render Table ────────────────────────────────────── */
+    function renderTable() {
+      let visible = [...products];
+
+      /* Category filter */
+      if (adminCatFilter !== 'all') {
+        visible = visible.filter(p => p.category === adminCatFilter);
+      }
+
+      /* Search */
+      if (adminSearch.trim()) {
+        const q = adminSearch.toLowerCase();
+        visible = visible.filter(p =>
+          p.name.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q) ||
+          p.status.toLowerCase().includes(q) ||
+          String(p.id).includes(q)
+        );
+      }
+
+      document.getElementById('filteredCount').textContent = visible.length;
+
+      const tbody = document.getElementById('adminTableBody');
+
+      if (visible.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-5" style="font-family:var(--font-display); color:var(--muted-slate); font-size:1.1rem; letter-spacing:0.05em; text-transform:uppercase;">
+              No items match your search.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = visible.map(p => buildRow(p)).join('');
+
+      /* Bind row edit buttons */
+      tbody.querySelectorAll('.btn-row-edit').forEach(btn => {
+        btn.addEventListener('click', function () {
+          toggleEditMode(parseInt(this.dataset.id, 10), true);
+        });
+      });
+
+      /* Bind row save buttons */
+      tbody.querySelectorAll('.btn-row-save').forEach(btn => {
+        btn.addEventListener('click', function () {
+          saveRow(parseInt(this.dataset.id, 10));
+        });
+      });
+
+      /* Bind row cancel buttons */
+      tbody.querySelectorAll('.btn-row-cancel').forEach(btn => {
+        btn.addEventListener('click', function () {
+          toggleEditMode(parseInt(this.dataset.id, 10), false);
+        });
+      });
+
+      /* Bind image edit button */
+      tbody.querySelectorAll('.btn-img-edit').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const id  = parseInt(this.dataset.id, 10);
+          const p   = products.find(x => x.id === id);
+          if (!p) return;
+          document.getElementById('imgEditProductId').value = id;
+          document.getElementById('imgUrlInput').value      = p.image;
+          document.getElementById('imgPreview').src         = p.image;
+          imgEditModal.show();
+        });
+      });
+
+      /* Allow Enter key to trigger Save in price input */
+      tbody.querySelectorAll('.edit-price-input').forEach(inp => {
+        inp.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            const id = parseInt(this.dataset.id, 10);
+            saveRow(id);
+          }
+        });
+      });
+    }
+
+    /* ── Build Table Row HTML ────────────────────────────── */
+    function buildRow(p) {
+      const edited = editedIds.has(p.id);
+      return `
+        <tr id="row-${p.id}" data-id="${p.id}">
+          <td style="color:var(--muted-slate); font-size:0.78rem;">#${p.id}</td>
+
+          <!-- Thumbnail -->
+          <td>
+            <div style="position:relative; display:inline-block;">
+              <img src="${escHtml(p.image)}"
+                   alt="${escHtml(p.name)}"
+                   class="admin-thumb"
+                   onerror="this.src='https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=600&q=80'"
+                   title="Click pencil to change image"
+              />
+              <button class="btn-img-edit"
+                data-id="${p.id}"
+                title="Change image"
+                style="position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:50%; background:var(--jet-black); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-size:0.6rem;">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+            </div>
+          </td>
+
+          <!-- Name (view + edit) -->
+          <td>
+            <span class="row-name-view" id="nameView-${p.id}" style="font-weight:600;">
+              ${escHtml(p.name)}
+              ${edited ? '<span style="color:var(--burnt-orange); font-size:0.65rem; margin-left:6px; font-weight:700;">EDITED</span>' : ''}
+            </span>
+            <input type="text" class="edit-name-input row-name-edit"
+              id="nameEdit-${p.id}" data-id="${p.id}"
+              value="${escHtml(p.name)}"
+              style="display:none;"
+              aria-label="Edit product name"
+            />
+          </td>
+
+          <!-- Category -->
+          <td style="font-size:0.82rem; color:var(--muted-slate);">${escHtml(p.category)}</td>
+
+          <!-- Status -->
+          <td><span class="admin-status-tag">${escHtml(p.status)}</span></td>
+
+          <!-- Price (view + edit) -->
+          <td>
+            <span class="row-price-view" id="priceView-${p.id}" style="font-weight:700;">
+              ${formatPrice(p.price)}
+            </span>
+            <input type="number" class="edit-price-input row-price-edit"
+              id="priceEdit-${p.id}" data-id="${p.id}"
+              value="${p.price}" min="0"
+              style="display:none;"
+              aria-label="Edit price"
+            />
+          </td>
+
+          <!-- Actions -->
+          <td class="text-center">
+            <!-- Edit button (default) -->
+            <button class="btn-edit-row btn-row-edit" data-id="${p.id}"
+              style="display:inline-block;">
+              <i class="bi bi-pencil me-1"></i>Edit
+            </button>
+
+            <!-- Save + Cancel (hidden until Edit clicked) -->
+            <div class="row-save-actions d-flex gap-1 justify-content-center" id="saveActions-${p.id}"
+              style="display:none !important;">
+              <button class="btn-save-row btn-row-save" data-id="${p.id}">
+                <i class="bi bi-check me-1"></i>Save
+              </button>
+              <button class="btn-edit-row btn-row-cancel" data-id="${p.id}"
+                style="border-color:var(--muted-slate); padding:6px 10px; font-size:0.65rem;">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </td>
+        </tr>`;
+    }
+
+    /* ── Toggle Row Edit Mode ────────────────────────────── */
+    function toggleEditMode(id, editing) {
+      const row = document.getElementById(`row-${id}`);
+      if (!row) return;
+
+      row.querySelector(`.row-name-view`).style.display  = editing ? 'none' : 'inline';
+      row.querySelector(`.row-name-edit`).style.display  = editing ? 'inline-block' : 'none';
+      row.querySelector(`.row-price-view`).style.display = editing ? 'none' : 'inline';
+      row.querySelector(`.row-price-edit`).style.display = editing ? 'inline-block' : 'none';
+
+      const editBtn    = row.querySelector('.btn-row-edit');
+      const saveActions = document.getElementById(`saveActions-${id}`);
+
+      if (editing) {
+        editBtn.style.display = 'none';
+        saveActions.style.display = 'flex';
+        // Focus price input
+        const priceInput = document.getElementById(`priceEdit-${id}`);
+        if (priceInput) { priceInput.focus(); priceInput.select(); }
+      } else {
+        editBtn.style.display = 'inline-block';
+        saveActions.style.display = 'none';
+        // Restore displayed values without re-rendering
+        const p = products.find(x => x.id === id);
+        if (p) {
+          document.getElementById(`nameEdit-${id}`).value = p.name;
+          document.getElementById(`priceEdit-${id}`).value = p.price;
+        }
+      }
+    }
+
+    /* ── Save Row ────────────────────────────────────────── */
+    function saveRow(id) {
+      const nameInput  = document.getElementById(`nameEdit-${id}`);
+      const priceInput = document.getElementById(`priceEdit-${id}`);
+      if (!nameInput || !priceInput) return;
+
+      const newName  = nameInput.value.trim();
+      const newPrice = parseFloat(priceInput.value);
+
+      if (!newName) {
+        alert('Product name cannot be empty.');
+        nameInput.focus();
+        return;
+      }
+      if (isNaN(newPrice) || newPrice < 0) {
+        alert('Please enter a valid price.');
+        priceInput.focus();
+        return;
+      }
+
+      /* Persist */
+      products = updateProduct(id, { name: newName, price: newPrice });
+      editedIds.add(id);
+
+      /* Update displayed values */
+      const priceView = document.getElementById(`priceView-${id}`);
+      const nameView  = document.getElementById(`nameView-${id}`);
+      if (priceView) priceView.innerHTML = `${formatPrice(newPrice)}`;
+      if (nameView)  nameView.innerHTML  = `${escHtml(newName)} <span style="color:var(--burnt-orange); font-size:0.65rem; margin-left:6px; font-weight:700;">EDITED</span>`;
+
+      /* Back to view mode */
+      toggleEditMode(id, false);
+
+      /* Flash row */
+      const row = document.getElementById(`row-${id}`);
+      if (row) {
+        row.classList.remove('row-saved');
+        void row.offsetWidth; // reflow
+        row.classList.add('row-saved');
+        setTimeout(() => row.classList.remove('row-saved'), 1500);
+      }
+
+      updateSummary();
+      showToast(`Saved: ${newName} — ${formatPrice(newPrice)}`, '✓');
+    }
+
+    /* ── Toast ───────────────────────────────────────────── */
+    let toastTimer;
+    function showToast(message, icon = '✓') {
+      const toast = document.getElementById('saveToast');
+      toast.textContent = `${icon}  ${message}`;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+
+    /* ── Escape HTML ─────────────────────────────────────── */
+    function escHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str ?? '';
+      return d.innerHTML;
+    }
+
+    /* ── Boot ────────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', init);
+
+  })();
+  </script>
+
+</body>
+</html>
