@@ -1,11 +1,8 @@
 /**
  * products-data.js
- * Afrol's Tech Corner — Shared 100-Item Product Catalog
- * Handles localStorage sync between admin.html and index.html
+ * Afrol's Tech Corner — 100-Item Product Catalog
+ * Provides the full product list to index.html
  */
-
-// ─── STORAGE KEY ────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'afrol_tech_products';
 
 // ─── DEFAULT 100-ITEM CATALOG ────────────────────────────────────────────────
 const DEFAULT_PRODUCTS = [
@@ -828,57 +825,7 @@ const DEFAULT_PRODUCTS = [
 ];
 
 
-// ─── LOCALSTORAGE HELPERS ─────────────────────────────────────────────────────
-
-/**
- * Load products from localStorage.
- * Falls back to DEFAULT_PRODUCTS if key doesn't exist yet.
- * @returns {Array} products array
- */
-function loadProducts() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch (e) {
-      console.warn('Afrol Tech: Failed to parse stored products. Using defaults.', e);
-    }
-  }
-  // First run — seed localStorage with defaults
-  saveProducts(DEFAULT_PRODUCTS);
-  return DEFAULT_PRODUCTS;
-}
-
-/**
- * Persist the products array to localStorage.
- * @param {Array} products
- */
-function saveProducts(products) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-}
-
-/**
- * Reset localStorage back to factory defaults.
- */
-function resetProducts() {
-  saveProducts(DEFAULT_PRODUCTS);
-  return DEFAULT_PRODUCTS;
-}
-
-/**
- * Update a single product's editable fields by ID.
- * @param {number} id
- * @param {Object} updates — e.g. { price: 9999, name: 'New Name', image: 'https://...' }
- * @returns {Array} updated full products array
- */
-function updateProduct(id, updates) {
-  const products = loadProducts();
-  const idx = products.findIndex(p => p.id === id);
-  if (idx === -1) return products;
-  products[idx] = { ...products[idx], ...updates };
-  saveProducts(products);
-  return products;
-}
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 /**
  * Format Philippine Peso price string.

@@ -1,172 +1,160 @@
 # 🛒 Afrol's Tech Corner
 
-> A fully responsive online gadget storefront for a Philippines-based tech shop — built with pure HTML, CSS, and JavaScript. No backend required.
+> A fully responsive **Product Showcase Website** built with **HTML, CSS, and Bootstrap 5** for a Web Development Performance Task.
 
 ![Static Site](https://img.shields.io/badge/Type-Static%20Website-blue)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple)
 ![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-yellow)
-![License](https://img.shields.io/badge/License-MIT-green)
+![Products](https://img.shields.io/badge/Products-100%20Items-green)
+![No Admin](https://img.shields.io/badge/Admin-Removed-red)
 
 ---
 
-## 🌐 Live Pages
+## ✅ Assignment Requirements Checklist
 
-| Page | File | Description |
-|------|------|-------------|
-| **Storefront** | `index.html` | Public-facing shop where customers browse products |
-| **Admin Panel** | `admin.html` | Staff dashboard to manage product names, prices, and images |
-
-> ⚠️ `admin.html` is **not linked** from the storefront on purpose. Access it directly by opening the file or navigating to `/admin.html`.
-
----
-
-## 🔐 Admin Login Credentials
-
-| Field | Value |
-|-------|-------|
-| **Username** | `admin` |
-| **Password** | `afrol2026` |
-
-**How to access the Admin Panel:**
-1. Open `admin.html` in your browser
-2. Enter the username and password above
-3. Click **Sign In**
-4. You'll be taken to the product management dashboard
-
-> 🔒 The session is stored in `sessionStorage` — logging out or closing the browser tab will require you to sign in again.
+| # | Requirement | Status |
+|---|-------------|--------|
+| 1 | **Four (4) Hyperlinks** — Home, Products, About Us, Contact | ✅ Done |
+| 2 | **Products Page — 100 Images** with product names and prices | ✅ Done |
+| 3 | **Bootstrap Template** — responsive, professional layout | ✅ Done |
+| 4 | **Buttons** — View Details, Add to Cart, Buy Now | ✅ Done |
+| 5 | **Product Prices** — clearly displayed on every card | ✅ Done |
+| 6 | **Product Names** — placed directly below each product image | ✅ Done |
+| 7 | **No admin/localStorage logic** — clean static catalog only | ✅ Done |
 
 ---
 
-## 📁 Project Structure
+## 🌐 Live Page
+
+| File | Description |
+|------|-------------|
+| `index.html` | Main product showcase website — open this in your browser |
+
+---
+
+## 🗂️ Project Structure
 
 ```
 Afrol's Tech Corner/
 │
-├── index.html          # 🏪 Public storefront
-├── admin.html          # 🛠️  Admin dashboard (password protected)
-├── products-data.js    # 💾 Shared product catalog + localStorage logic
-├── style.css           # 🎨 Shared styles for both pages
+├── index.html          # 🏪 Main showcase website (Bootstrap 5.3, 4 nav links, 100 products)
+├── products-data.js    # 💾 Static 100-item product catalog (no localStorage, no admin)
+├── style.css           # 🎨 Custom Nike-inspired styles (admin CSS removed)
 └── README.md           # 📖 This file
 ```
 
----
-
-## 🔗 How the Two Pages Are Connected
-
-Both pages share data through the **browser's `localStorage`** using a single shared script called `products-data.js`.
-
-```
-┌─────────────┐    saves changes     ┌──────────────────┐
-│  admin.html │  ──────────────────► │   localStorage   │
-│ (Admin Panel│                      │ "afrol_tech_     │
-│            )│  ◄────────────────── │  products"       │
-└─────────────┘    loads on edit     └────────┬─────────┘
-                                              │
-                                              │ loads on visit
-                                              ▼
-                                     ┌─────────────────┐
-                                     │   index.html    │
-                                     │  (Storefront)   │
-                                     └─────────────────┘
-```
-
-**In plain English:**
-- When the **admin edits** a product's name, price, or image → the change is saved to the browser's local storage
-- When a **customer visits** the storefront → it reads from that same local storage and shows the updated data
-- If no edits have been made yet, both pages fall back to the **100 built-in default products**
-
-> 📝 Because this uses `localStorage`, data only syncs between pages **in the same browser on the same device**. This is a static website — there is no server or cloud database.
+> ⚠️ `admin.html` has been **permanently removed**. `products-data.js` is now a pure static data file with no localStorage, no `saveProducts()`, no `updateProduct()`, and no admin references.
 
 ---
 
-## ⚙️ How the System Works
+## 🔗 Four (4) Functional Navigation Hyperlinks
 
-### 🏪 Storefront (`index.html`)
+Located in the sticky top navbar:
 
-The storefront is what customers see. Here's everything it can do:
+| Link | Destination |
+|------|-------------|
+| **Home** | `#home` — Hero section at the top of the page |
+| **Products** | `#products` — Full 100-item product grid |
+| **About Us** | `#about` — Store story and trust badges |
+| **Contact** | `#contact` — Message form and store info |
 
-| Feature | How it works |
-|---------|-------------|
-| **Product Grid** | Automatically loads and displays all 100 products in a responsive card layout |
-| **Category Filter** | Click All / Relo / Laptops / Cellphones / Accessories to filter the grid instantly |
-| **Search Bar** | Type in the navbar search box to filter products by name, category, or status in real time |
-| **Sort** | Use the dropdown to sort by Featured (default), Price: Low to High, or Price: High to Low |
-| **Inquire Button** | Clicking "Inquire" on any product opens a form modal where customers can submit their name and contact info |
-| **Contact Form** | The "Send Us A Message" section at the bottom lets customers send general inquiries |
-| **Smooth Scrolling** | Nav links and the "Explore Gadgets" button smoothly scroll to the right section |
-| **Responsive Design** | Works on mobile, tablet, and desktop — built with Bootstrap 5 grid |
+All four links scroll smoothly to their respective sections. The active link is **highlighted** as you scroll.
 
 ---
 
-### 🛠️ Admin Dashboard (`admin.html`)
+## 🖼️ Products Page — 100 Product Images
 
-The admin panel lets staff manage the product catalog. Here's everything it can do:
+The Products section displays **100 items** across **4 categories**:
 
-| Feature | How it works |
-|---------|-------------|
-| **Login / Logout** | Secure front-end login gate using username + password. Session is kept per browser tab |
-| **Product Table** | Shows all 100 products in a scrollable table with ID, image, name, category, status, and price |
-| **Search** | Filter the table by product name, category, status, or ID number |
-| **Category Filter** | Dropdown to show only one product category at a time |
-| **Edit Product** | Click the ✏️ Edit button on any row to edit its name and price inline |
-| **Save Changes** | Click ✓ Save (or press Enter in the price field) to save the edit — it immediately updates the storefront too |
-| **Cancel Edit** | Click ✗ to discard changes without saving |
-| **Change Image** | Click the pencil icon on a product thumbnail to open a modal where you can paste a new image URL with a live preview |
-| **Edited Badge** | Edited products show an orange "EDITED" badge so you know what's been changed this session |
-| **Summary Bar** | Shows Total Products, currently Showing (after filters), and how many were Edited This Session |
-| **Reset to Defaults** | Click "Reset Default Prices" → confirm → all 100 products revert to their original names, prices, and images |
-| **Toast Notifications** | A small pop-up at the bottom-right confirms every save, image update, or reset action |
-| **View Storefront** | A link in the top bar opens the storefront in a new tab so you can preview changes |
+| Category | Items | IDs |
+|----------|-------|-----|
+| ⌚ Relo / Smartwatches | 25 | #1 – #25 |
+| 💻 Laptops | 25 | #26 – #50 |
+| 📱 Cellphones (CP) | 25 | #51 – #75 |
+| 🎧 Accessories | 25 | #76 – #100 |
 
----
-
-## 💾 Data Layer (`products-data.js`)
-
-This file is loaded by **both pages** and handles all data operations:
-
-| Function | What it does |
-|----------|-------------|
-| `loadProducts()` | Loads the product list from `localStorage`. If nothing is saved yet, seeds it with the 100 default products |
-| `saveProducts(array)` | Saves the full product array to `localStorage` |
-| `updateProduct(id, changes)` | Updates a single product by its ID and saves |
-| `resetProducts()` | Wipes saved data and restores all 100 defaults |
-| `formatPrice(price)` | Formats a number like `18990` into `₱18,990` (Philippine Peso format) |
+Each product card shows:
+- **Product Image** (100 total, with fallback on error)
+- **Product Name** — directly below the image
+- **Category** label
+- **Price** — clearly displayed in Philippine Peso (₱)
+- **Status tag** — Best Seller or Just In
+- **Action Buttons**
 
 ---
 
-## 🗂️ Product Catalog
+## 🎨 Bootstrap 5.3 Template
 
-The store comes with **100 pre-loaded products** across 4 categories:
-
-| Category | Products | IDs |
-|----------|----------|-----|
-| ⌚ Relo / Smartwatches | 25 items | #1 – #25 |
-| 💻 Laptops | 25 items | #26 – #50 |
-| 📱 Cellphones (CP) | 25 items | #51 – #75 |
-| 🎧 Accessories | 25 items | #76 – #100 |
-
-**Product status types:**
-- 🔥 `Best Seller` — popular items
-- 🆕 `Just In` — newly added / fresh stock
+The site is built on **Bootstrap 5.3** and includes:
+- Responsive grid system (`col-lg-3 col-md-4 col-sm-6 col-6`) — adapts to any screen size
+- Bootstrap Navbar with collapse on mobile
+- Bootstrap Modals for product detail view
+- Bootstrap utility classes for spacing, alignment, and typography
+- Google Fonts: **Oswald** (headings) + **Inter** (body)
+- **Bootstrap Icons** throughout the UI
 
 ---
 
-## 🚀 How to Run Locally
+## 🔘 Buttons — Functional & Properly Designed
 
-No installation needed. Just:
+### On Each Product Card:
+| Button | Function |
+|--------|----------|
+| **View Details** (black pill) | Opens a **Product Details Modal** showing full info |
+| **🛒** (orange icon) | **Add to Cart** — instantly adds 1 item, updates cart count |
 
-1. **Download or clone** this repository
-2. **Open `index.html`** in any modern browser to view the storefront
-3. **Open `admin.html`** to access the admin panel (use credentials above)
+### Inside the Product Details Modal:
+| Button | Function |
+|--------|----------|
+| **Add to Cart** | Adds selected quantity to cart, shows success message |
+| **Buy Now** | Adds to cart + shows order confirmation, scrolls to Contact form |
+
+### In the Navbar:
+| Button | Function |
+|--------|----------|
+| **Cart 🛒** | Shows live cart count badge; click to see total items & price |
+
+---
+
+## 💰 Product Prices
+
+Every product displays its price in **Philippine Peso (₱)** format, e.g.:
+- ₱18,990 — Samsung Galaxy Watch 7
+- ₱74,990 — MacBook Air M3
+- ₱89,990 — iPhone 16 Pro Max
+
+Prices update correctly when sorted by **Low to High** or **High to Low**.
+
+---
+
+## 🚀 How to Run
+
+No installation or server needed:
 
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/JhayPaull/Afrol-s-Tech-Corner.git
 
-# Then just open index.html in your browser
+# Open in browser
+# Just double-click index.html — or open it from VS Code with Live Server
 ```
 
-> ✅ Works on Chrome, Firefox, Edge, and Safari. No server or Node.js needed.
+> ✅ Works on Chrome, Firefox, Edge, and Safari.
+
+---
+
+## ⚙️ Additional Features (Beyond Requirements)
+
+| Feature | Description |
+|---------|-------------|
+| 🔍 **Live Search** | Search bar in navbar filters products in real time |
+| 🏷️ **Category Filter** | Filter buttons: All / Relo / Laptops / Cellphones / Accessories |
+| ↕️ **Sort** | Sort by Featured, Price Low→High, or Price High→Low |
+| 🛒 **Cart System** | In-memory cart with item count badge and total price |
+| 🔔 **Toast Notifications** | Bottom-right popup confirms every cart action |
+| 🔢 **Quantity Selector** | +/− buttons in product modal for choosing quantity |
+| 📱 **Responsive** | Works on mobile, tablet, and desktop |
+| 🖱️ **Smooth Scroll** | All nav links and hero button scroll smoothly |
 
 ---
 
@@ -174,23 +162,13 @@ git clone https://github.com/JhayPaull/Afrol-s-Tech-Corner.git
 
 | Technology | Purpose |
 |------------|---------|
-| **HTML5** | Page structure and content |
-| **CSS3 + Custom Properties** | Styling, theming, responsive layout |
-| **Vanilla JavaScript (ES6+)** | All interactivity and data management |
-| **Bootstrap 5.3** | Grid system, modals, navbar, responsive utilities |
-| **Bootstrap Icons** | Icon library used throughout the UI |
-| **Google Fonts** | Oswald (headings) + Inter (body text) |
-| **localStorage API** | Persistent data storage shared across pages |
-| **Unsplash** | Default product images (CDN-hosted) |
-
----
-
-## 📌 Important Notes
-
-- 🔓 **Admin credentials are stored in the front-end source code.** This is intentional for a static/demo site. Do **not** use this setup for a real production environment without a proper backend authentication system.
-- 💾 **Data is browser-local.** Changes made in the admin panel only sync to the storefront on the **same browser and device**. There is no cloud database.
-- 📧 **Forms are simulated.** The inquiry and contact forms show success messages but do not actually send emails or save submissions anywhere.
-- 🔗 **Admin page is hidden by design.** It is not linked from `index.html` — staff must navigate to it directly.
+| **HTML5** | Page structure |
+| **CSS3** | Custom styling and animations |
+| **JavaScript (ES6+)** | Product rendering, cart, filters, search, modals |
+| **Bootstrap 5.3** | Grid, navbar, modals, responsive utilities |
+| **Bootstrap Icons 1.11** | Icon library |
+| **Google Fonts** | Oswald + Inter typography |
+| **Unsplash CDN** | Product placeholder images |
 
 ---
 
